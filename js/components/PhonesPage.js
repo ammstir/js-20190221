@@ -65,7 +65,12 @@ export default class PhonesPage {
         this.setState({selectedPhone: getById(phoneId)})
       }});
 
-    this.initComponent(PhoneViewer, {phone: this.state.selectedPhone});
+    this.initComponent(PhoneViewer, {
+      phone: this.state.selectedPhone,
+      onBackButton: () => {
+        this.state.selectedPhone = null;
+        this.render();
+      } });
 
     this.initComponent(Filter);
     this.initComponent(ShoppingCart);

@@ -4,6 +4,13 @@ export default class PhoneViewer {
     this.props = props;
 
     this.render();
+    document.querySelector('[class = "phone-thumbs"]').addEventListener('click', (event) => {
+      const link = event.target.closest('li');
+      const mainImg = document.querySelector('[class = "phone"]');
+      mainImg.setAttribute("src", link.children[0].getAttribute("src"))
+    });
+
+    document.querySelector('[class="button-back"]').addEventListener('click', this.props.onBackButton);
   }
 
   render() {
@@ -14,7 +21,7 @@ export default class PhoneViewer {
       
         <img class="phone" src="${ phone.images[0] }">
         
-        <button>Back</button>
+        <button class="button-back">Back</button>
         <button>Add to basket</button>
         
         
@@ -33,5 +40,7 @@ export default class PhoneViewer {
         
       </div>
     `;
+
+
   }
 }
