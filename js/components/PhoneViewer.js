@@ -1,16 +1,21 @@
-export default class PhoneViewer {
+import Component from '../Component.js';
+
+export default class PhoneViewer extends Component{
   constructor(element, props) {
-    this.element = element;
-    this.props = props;
+    super(element, props);
 
     this.render();
+
     document.querySelector('[class = "phone-thumbs"]').addEventListener('click', (event) => {
       const link = event.target.closest('li');
       const mainImg = document.querySelector('[class = "phone"]');
       mainImg.setAttribute("src", link.children[0].getAttribute("src"))
     });
 
-    document.querySelector('[class="button-back"]').addEventListener('click', this.props.onBackButton);
+    this.on('click', 'BackButton', () => { this.props.onBack() });
+    this.on('click', 'AddButton', () => { this.props.onAdd(this.props.phone.id) });
+
+    //document.querySelector('[class="button__add-to-cart"]').addEventListener('click', this.props.onAddToCart);
   }
 
   render() {
@@ -21,8 +26,8 @@ export default class PhoneViewer {
       
         <img class="phone" src="${ phone.images[0] }">
         
-        <button class="button-back">Back</button>
-        <button>Add to basket</button>
+        <button data-element="BackButton">Back</button>
+        <button data-element="AddButton" data-phone-id="${ phone.id }">Add to basket</button>
         
         
         <h1>${ phone.name }</h1>
