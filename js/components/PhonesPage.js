@@ -14,14 +14,32 @@ export default class PhonesPage extends Component {
     this.state = {
       phones: getAll(),
       selectedPhone: null,
-      items: []
+      items: {}
     };
 
     this.render();
   }
 
-  onAddToCart(event) {
+  removeItem(itemToRemove) {
+    this.setState({ items: this.state.items.filter( item => item !== itemToRemove)});
+  }
 
+  addItem(item) {
+    const oldItems = this.state.items;
+    const items = {
+      ...oldItems,
+      [item]: oldItems[item] ? oldItems[item] + 1 : 1
+    };
+
+    this.setState({ items: items });
+  }
+
+  selectedPhone(phoneId) {
+    this.setState({ selectedPhone: getById(phoneId) });
+  }
+
+  unselectedPhone() {
+    this.setState({ selectedPhone: null });
   }
 
   render() {
@@ -51,25 +69,20 @@ export default class PhonesPage extends Component {
 
     this.initComponent(PhonesCatalog, {
       phones: this.state.phones,
-      onPhoneSelected: (phoneId) => {
-        this.setState({selectedPhone: getById(phoneId)})
-      },
-      onAdd: (phoneId) => {
-        this.setState({items: [...this.state.items, phoneId]});
-      },
+      onPhoneSelected: (phoneId) => this.selectedPhone(phoneId),
+      onAdd: (phoneId) => this.addItem(phoneId),
     });
 
     this.initComponent(PhoneViewer, {
       phone: this.state.selectedPhone,
-      onBack: () => {
-        this.setState({selectedPhone: null});
-      },
-      onAdd: (phoneId) => {
-        this.setState({items: [...this.state.items, phoneId]});
-      },
+      onBack: () => this.unselectedPhone(),
+      onAdd: (phoneId) => this.addItem(phoneId),
     });
 
     this.initComponent(Filter);
-    this.initComponent(ShoppingCart, { items: this.state.items});
+    this.initComponent(ShoppingCart, {
+      items: this.state.items,
+      onRemove: (itemToRemove) => this.removeItem(itemToRemove)
+    });
   }
 }
