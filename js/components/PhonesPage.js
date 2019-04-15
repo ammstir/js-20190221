@@ -12,12 +12,20 @@ export default class PhonesPage extends Component {
     super(element);
 
     this.state = {
-      phones: getAll(),
+      phones: [],
       selectedPhone: null,
       items: {}
     };
 
+    this.onPhoneSelected = (phoneId) => this.selectedPhone(phoneId);
+    this.onAdd = (phoneId) => this.addItem(phoneId);
+    this.onBack = () => this.unselectedPhone();
+    this.onRemove = (itemToRemove) => this.removeItem(itemToRemove);
+
+
     this.render();
+
+    getAll().then((phones) => this.setState({phones: phones}));
   }
 
   removeItem(itemToRemove) {
@@ -35,7 +43,10 @@ export default class PhonesPage extends Component {
   }
 
   selectedPhone(phoneId) {
-    this.setState({ selectedPhone: getById(phoneId) });
+    getById(phoneId)
+      .then(phone =>
+        this.setState({selectedPhone: phone})
+      );
   }
 
   unselectedPhone() {
