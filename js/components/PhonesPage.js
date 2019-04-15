@@ -29,7 +29,12 @@ export default class PhonesPage extends Component {
   }
 
   removeItem(itemToRemove) {
-    this.setState({ items: this.state.items.filter( item => item !== itemToRemove)});
+    const newItems = this.state.items;
+    delete newItems[itemToRemove];
+
+    this.setState({
+      items: newItems
+    });
   }
 
   addItem(item) {
@@ -80,20 +85,20 @@ export default class PhonesPage extends Component {
 
     this.initComponent(PhonesCatalog, {
       phones: this.state.phones,
-      onPhoneSelected: (phoneId) => this.selectedPhone(phoneId),
-      onAdd: (phoneId) => this.addItem(phoneId),
+      onPhoneSelected: this.onPhoneSelected,
+      onAdd: this.onAdd,
     });
 
     this.initComponent(PhoneViewer, {
       phone: this.state.selectedPhone,
-      onBack: () => this.unselectedPhone(),
-      onAdd: (phoneId) => this.addItem(phoneId),
+      onBack: this.onBack,
+      onAdd: this.onAdd,
     });
 
     this.initComponent(Filter);
     this.initComponent(ShoppingCart, {
       items: this.state.items,
-      onRemove: (itemToRemove) => this.removeItem(itemToRemove)
+      onRemove: this.onRemove
     });
   }
 }
