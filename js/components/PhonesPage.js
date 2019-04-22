@@ -7,20 +7,19 @@ import Component from '../Component.js';
 import { getAll, getById } from '../api/phones.js';
 
 export default class PhonesPage extends Component {
-
   constructor(element) {
     super(element);
 
     this.state = {
       phones: [],
       selectedPhone: null,
-      items: {}
+      items: {},
     };
 
-    this.onPhoneSelected = (phoneId) => this.selectedPhone(phoneId);
-    this.onAdd = (phoneId) => this.addItem(phoneId);
+    this.onPhoneSelected = phoneId => this.selectedPhone(phoneId);
+    this.onAdd = phoneId => this.addItem(phoneId);
     this.onBack = () => this.unselectedPhone();
-    this.onRemove = (itemToRemove) => this.removeItem(itemToRemove);
+    this.onRemove = itemToRemove => this.removeItem(itemToRemove);
 
     this.render();
     this.loadPhones();
@@ -37,7 +36,7 @@ export default class PhonesPage extends Component {
     delete newItems[itemToRemove];
 
     this.setState({
-      items: newItems
+      items: newItems,
     });
   }
 
@@ -45,17 +44,15 @@ export default class PhonesPage extends Component {
     const oldItems = this.state.items;
     const items = {
       ...oldItems,
-      [item]: oldItems[item] ? oldItems[item] + 1 : 1
+      [item]: oldItems[item] ? oldItems[item] + 1 : 1,
     };
 
-    this.setState({ items: items });
+    this.setState({ items });
   }
 
   selectedPhone(phoneId) {
     getById(phoneId)
-      .then(phone =>
-        this.setState({selectedPhone: phone})
-      );
+      .then(phone => this.setState({ selectedPhone: phone }));
   }
 
   unselectedPhone() {
@@ -79,10 +76,10 @@ export default class PhonesPage extends Component {
 
       <!--Main content-->
       <div class="col-md-10">
-        ${ this.state.selectedPhone 
-          ? `<div data-component="PhoneViewer"></div>`
-          : `<div data-component="PhonesCatalog"></div>`
-          }
+        ${this.state.selectedPhone
+    ? '<div data-component="PhoneViewer"></div>'
+    : '<div data-component="PhonesCatalog"></div>'
+}
       </div>
     </div>
     `;
@@ -103,7 +100,7 @@ export default class PhonesPage extends Component {
 
     this.initComponent(ShoppingCart, {
       items: this.state.items,
-      onRemove: this.onRemove
+      onRemove: this.onRemove,
     });
   }
 }

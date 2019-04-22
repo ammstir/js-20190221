@@ -7,7 +7,6 @@ export const getAll = async () => {
   } catch (e) {
     return [];
   }
-
 };
 
 export const getById = async (phoneId) => {
@@ -17,5 +16,4 @@ export const getById = async (phoneId) => {
   } catch (e) {
     return 0;
   }
-
 };
