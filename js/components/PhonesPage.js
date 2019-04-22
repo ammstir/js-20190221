@@ -22,14 +22,18 @@ export default class PhonesPage extends Component {
     this.onBack = () => this.unselectedPhone();
     this.onRemove = (itemToRemove) => this.removeItem(itemToRemove);
 
-
     this.render();
+    this.loadPhones();
+  }
 
-    getAll().then((phones) => this.setState({phones: phones}));
+  async loadPhones() {
+    const phones = await getAll();
+
+    this.setState({ phones });
   }
 
   removeItem(itemToRemove) {
-    const newItems = this.state.items;
+    const newItems = { ...this.state.items };
     delete newItems[itemToRemove];
 
     this.setState({
@@ -96,6 +100,7 @@ export default class PhonesPage extends Component {
     });
 
     this.initComponent(Filter);
+
     this.initComponent(ShoppingCart, {
       items: this.state.items,
       onRemove: this.onRemove
